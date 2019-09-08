@@ -423,8 +423,13 @@ function WixUClass(params){
 
 var Constant = {
     URL : (function(){
-        var _origin = 'http://kwix.jp',//or wixdemo.dbで
-            _app = '/demo',
+        // var _origin = 'http://kwix.jp',//or wixdemo.dbで
+        //    _app = '/demo',
+        //    _publicFolder,
+        //    _addon = '/download'
+
+        var _origin = 'http://wixdev.db.ics.keio.ac.jp',
+            _app = '/keisuke_WIXServer_0.5.3',
             _publicFolder,
             _addon = '/download'
 

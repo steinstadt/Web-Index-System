@@ -324,8 +324,11 @@ function VersionManager(nowVersion){
 var Constant = {
     Version : '0.7.1',
     URL : (function(){
-        var _origin = 'http://wixdemo.db.ics.keio.ac.jp',
-            _app = '/demo'
+        // var _origin = 'http://wix.demo.db.ics.keio.ac.jp'
+        //        _app = '/demo'
+
+        var _origin = 'http://wixdev.db.ics.keio.ac.jp',
+            _app = '/keisuke_WIXServer_0.5.3'
 
         return {
             LAB : 'http://www.db.ics.keio.ac.jp',
@@ -351,7 +354,8 @@ var defaultBookmarks = {
     'Wikipedia-en' : '2',
     'Blog' : '3',
     'Company' : '4',
-    'EJ Dict' : '5'
+    'EJ Dict' : '5',
+    'test' : '99'
 }
 var broadBookmarks = [
     {
