@@ -584,6 +584,7 @@ Wix.main = new WIXClass({
         }
     },
     view : {
+        // login : create attachButton
         login : function(){
             var attachButton,
                 array = []; // add attachButton to array

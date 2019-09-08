@@ -220,6 +220,7 @@ Attacher.prototype = {
      * @param {Function} [callback] 通信成功時に行う処理を追加.
      */
     attach : function(callback){
+        // Attacherクラスの取得
         var self = this
 
         var req = {
@@ -229,11 +230,11 @@ Attacher.prototype = {
             body : Util.escapeUTF8(this.getParameter('body')),
             attachType : this.getAttachType()
         }
-
+        // Ajax通信
         connection.send(
             'Attach',
             req,
-            function(data){
+            function(data){  // コールバック関数
                 if(data == 'error'){
                     if(callback){
                         callback(data, 'error');
@@ -256,6 +257,7 @@ Attacher.prototype = {
      * 引数の型で処理を分岐
      * @param {Object} [attachedObj] StringまたはKey-Value型
      */
+     // 返されたjsonデータをブラウザ上のhtmlに反映
     rewrite : function(attachedObj){
         if(typeof attachedObj == 'string'){
             $("body")[0].innerHTML = attachedObj;
@@ -263,6 +265,7 @@ Attacher.prototype = {
             for (var i = 0, max = attachedObj.length; i < max; i++){
                 var res = attachedObj[i],
                     node = this.dnb.get(res.index);
+                console.log(res);
                 $(node).before(res.newBody);
                 $(node).remove();
             }
@@ -558,7 +561,9 @@ WixU.main = new WixUClass({
         }
     },
     function : {
+        // アタッチ処理
         attach : function (wid, minLength){
+            // 処理時間計測の変数
             var start = new Date().getTime(),finish;
 
             $("#loading").empty();
@@ -578,6 +583,7 @@ WixU.main = new WixUClass({
                 $(this).remove();
             })
 
+            // アタッチセッティング
             var atc = new Attacher();
 
             atc.setParameter('wid' , wid);
@@ -602,7 +608,9 @@ WixU.main = new WixUClass({
                 }
             })
         },
+        // イベントリスナーの設定　ここで各部品のイベントを設定できる。
         setEventListener : function(){
+            // アタッチボタンへのイベントリスナを設定する
             $('.wix-attach').on('click', function(e) {
                 redirector.setWtId('')
                 WixU.main.function.attach(e.target.getAttribute('wid'), WixU.option.get('Main', 'minLength'));
@@ -620,6 +628,7 @@ WixU.main = new WixUClass({
             $(document).on('keyup',function(e){
                 WixU.key.shift = false;
             })
+            // ツールバー全体へのイベントリスナー
             $("#wix-body").hover(function(){
                     $(this).addClass("hover")
                 },function(){
@@ -674,6 +683,7 @@ WixU.main = new WixUClass({
             WixU.init.eventListener();
         }
     },
+    // WixU初期化処理
     init : function(res){
         if(!document.getElementById('wix-body')){
             WixU.function.insertCSS('wix');
