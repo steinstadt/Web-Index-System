@@ -155,6 +155,7 @@ var Extension = (function(){
                     group.append(title);
 
                     for(; i < max; i++){
+                        // 一つ一つのボタンラベルを作成
                         var div = _createElement('div'),
                             input = _createElement('input', {
                                 'id' : name + i,
@@ -212,6 +213,7 @@ var Extension = (function(){
                     return body.appendChilds([input, output]);
                 },
                 createPopup : function(name, contents){
+                    // <div id=dummyId><div id=mainId>contents</div></div>のポップアップ要素を返す
                     var mainId = name + '-popup',
                         dummyId = mainId + '-dummy',
                         dummy = _createElement('div',{
@@ -357,6 +359,8 @@ var defaultBookmarks = {
     'EJ Dict' : '5',
     'test' : '99'
 }
+
+// word tank用　検索エンジン
 var broadBookmarks = [
     {
         'wtid' : 1,
