@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE WIX SYSTEM "http://wixdemo.db.ics.keio.ac.jp/wixfile.dtd">
+<WIX>
+  <header>
+    <comment>コメント</comment>
+    <description>説明</description>
+    <language>ja</language>
+  </header>
+  <body>
+    <entry>
+      <keyword>コウメ太夫</keyword>
+      <target>https://news.yahoo.co.jp/pickup/6335516</target>
+    </entry>
+    <entry>
+      <keyword>ジャニー</keyword>
+      <target>https://news.yahoo.co.jp/pickup/6335508</target>
+    </entry>
+  </body>
+</WIX>
