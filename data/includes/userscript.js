@@ -376,6 +376,7 @@ Attacher.prototype = {
     }
 }
 
+// アタッチされたリンクをクリックした時の処理を記述
 function Redirector(){
 
     var self = this,
@@ -392,10 +393,13 @@ function Redirector(){
         $('.wix-broad-attach').removeClass('clicked')
         _wtid = wtid;
     }
+
+    // クリックされたリンクターゲットをセット
     this.setEventTarget = function(eventTarget){
         _eventTarget = eventTarget;
     }
 
+    // クリックされたターゲットに対応するURLへ飛ぶ
     this.open = function(){
         if(_wtid){
             var keyword = Util.escapeUTF8(_eventTarget.innerHTML);
@@ -549,7 +553,7 @@ var WixU = {
     })()
 }
 
-WixU.main = new WixUClass({
+WixU.main = new WixUClass({ //params引数の設定
     name : 'Main',
     type : 'core',
     option : {
@@ -614,6 +618,9 @@ WixU.main = new WixUClass({
             $('.wix-attach').on('click', function(e) {
                 redirector.setWtId('')
                 WixU.main.function.attach(e.target.getAttribute('wid'), WixU.option.get('Main', 'minLength'));
+                // set wid to wixModeNum
+                wixModeNum = e.target.getAttribute('wid');
+                console.log(wixModeNum);
             });
             $('.wix-broad-attach').on('click', function(e) {
                 redirector.setWtId(e.target.getAttribute('wtid'))
@@ -698,6 +705,7 @@ WixU.main = new WixUClass({
     }
 })
 
+
 if(ExtensionU.Status.browser == 'Opera'){
     window.document.addEventListener('DOMContentLoaded', function(event){
         WixU.init.exec()
@@ -705,5 +713,44 @@ if(ExtensionU.Status.browser == 'Opera'){
 } else if (window.top === this){
     WixU.init.exec()
 }
+
+
+//Wix モード追加
+var wixModeNum = 1; // アタッチするwid
+var wixMode = function(){
+  wixModeNum = getParam('wixModeNum');
+  // wixModeNumに数が入っていれば実行
+  if (wixModeNum) {
+    WixU.main.function.attach(wixModeNum, 3);
+    console.log("executed");
+  }
+}
+window.onload = wixMode();
+
+// Aタグをクリックした時のイベント
+window.onclick = function(e){
+  var x = e.clientX;
+  var y = e.clientY;
+  var elem = document.elementFromPoint(x, y);
+  // クエリパラメータの生成
+  if (elem.nodeName == 'A' && elem.className != 'wix-link') {
+    elem = elem + '?wixModeNum=' + wixModeNum;
+    // window.location.href = elem;
+    window.open(elem); // 新しいタブを開き、ページを表示
+    window.open('about:blank','_self').close(); // 現在のページを閉じる
+  }
+}
+
+// urlのクエリパラメータを取得
+function getParam(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
 
 })(window.jQuery190)
