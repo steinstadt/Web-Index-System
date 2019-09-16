@@ -265,7 +265,6 @@ Attacher.prototype = {
             for (var i = 0, max = attachedObj.length; i < max; i++){
                 var res = attachedObj[i],
                     node = this.dnb.get(res.index);
-                console.log(res);
                 $(node).before(res.newBody);
                 $(node).remove();
             }
@@ -619,7 +618,7 @@ WixU.main = new WixUClass({ //params引数の設定
                 redirector.setWtId('')
                 WixU.main.function.attach(e.target.getAttribute('wid'), WixU.option.get('Main', 'minLength'));
                 // set wid to wixModeNum
-                wixModeAttach(e.target.getAttribute('wid'), e.target.innerText);
+                wixModeAttach(e.target.getAttribute('wid'), true);
             });
             $('.wix-broad-attach').on('click', function(e) {
                 redirector.setWtId(e.target.getAttribute('wtid'))
@@ -673,6 +672,8 @@ WixU.main = new WixUClass({ //params引数の設定
             $('.wix-attach-off').on('click',function(){
                 $('.wix-link').contents().unwrap();
                 $('.wix-decide').contents().unwrap();
+                // wixNumReset
+                wixModeAttach(0, false);
             });
 
         },
@@ -713,66 +714,30 @@ if(ExtensionU.Status.browser == 'Opera'){
     WixU.init.exec()
 }
 
-
-// // Aタグをクリックした時のイベント
-// window.onclick = function(e){
-//   var x = e.clientX;
-//   var y = e.clientY;
-//   var elem = document.elementFromPoint(x, y);
-//   // クエリパラメータの生成
-//   if (elem.nodeName == 'A' && elem.className != 'wix-link') {
-//     elem = elem + '?wixModeNum=' + wixModeNum;
-//     // window.location.href = elem;
-//     window.open(elem); // 新しいタブを開き、ページを表示
-//     window.open('about:blank','_self').close(); // 現在のページを閉じる
-//   }
-// }
-//
-// // urlのクエリパラメータを取得
-// function getParam(name, url) {
-//     if (!url) url = window.location.href;
-//     name = name.replace(/[\[\]]/g, "\\$&");
-//     var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-//         results = regex.exec(url);
-//     if (!results) return null;
-//     if (!results[2]) return '';
-//     return decodeURIComponent(results[2].replace(/\+/g, " "));
-// }
-
-// クエリパラメータのwidから
-// var wixModeAttach= function(){
-//   wixModeNum = getParam('wixModeNum');
-//   // wixModeNumに数が入っていれば実行
-//   if (wixModeNum) {
-//     WixU.main.function.attach(wixModeNum, 3);
-//     console.log("executed in wixMode");
-//   }
-// }
-
 // wixmode config parameter
 var chromeStorageSync = chrome.storage.sync; // chrome拡張ストレージ機能
 
 // アタッチするwidをストレージに保存
-var wixModeAttach = function(wid, innerText){
+var wixModeAttach = function(wid, isWixOn){
   // chromeストレージ機能
   chromeStorageSync.set(
     {
       "wixModeNum" : wid,
-      "wixModeName" : innerText
+      "wixModeBool" : isWixOn
     }
   );
 }
 
 // chromeストレージからwixModeNumを取得＆アタッチ
 var wixModeInUserScript = function(){
-  chromeStorageSync.get(["wixModeNum", "wixModeName"], function(items){
-    if (items.wixModeNum){
-      console.log(items.wixModeName + ' ' + 'is attached');
+  chromeStorageSync.get(["wixModeNum", "wixModeBool"], function(items){
+    if (items.wixModeNum && items.wixModeBool){
+      console.log(items.wixModeNum);
       // wix アタッチ
-
+      WixU.main.function.attach(items.wixModeNum, WixU.option.get('Main', 'minLength'));
     }
   });
 }
-window.onload = wixModeInUserScript();
+window.setTimeout( wixModeInUserScript, 1500); // 3 second execute
 
 })(window.jQuery190)
