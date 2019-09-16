@@ -1,0 +1,34 @@
+#wix-main {
+  height: 100%;
+  width: 80%;
+  overflow-x: scroll;
+  float: right;
+}
+
+#wix-learning-main {
+  height: 100%;
+  width: 20%;
+  position: fixed;
+  float: left;
+  border-right: solid 3px #364e96;
+}
+
+#wix-learning-form {
+  margin: 5px;
+}
+
+#wix-learning-form h2{
+  color: #364e96; /* text color */
+  border: solid 3px #364e96; /*境界線の色*/
+  padding: 0.5em;
+  border-radius: 0.5em; /*角丸*/
+}
+
+#wix-learning-history {
+  margin: 5px;
+}
+
+#wix-learning-history h2{
+  border-bottom : 1px solid #364e96;
+  border-left : 10px solid #364e96;
+}

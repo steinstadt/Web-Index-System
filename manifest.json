@@ -12,7 +12,8 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["data/includes/jquery.min.js", "data/scripts/ecl.js","data/includes/userscript.js"]
+      "css" : ["data/public/css/wixEFL.css"],
+      "js": ["data/includes/jquery.min.js", "data/scripts/ecl.js","data/includes/userscript.js", "data/includes/learningpage.js"]
     }
   ],
   "permissions": [
