@@ -101,6 +101,8 @@ var ExtensionU = (function(){
         }
     }
 }());
+
+// 通信メソッドのオーバーライド
 ExtensionU.Message.connection.prototype.send = function(name, data, callback) {
     this.listeners[name] = callback || function() {}
     if (ExtensionU.Status.browser=='Safari') {
@@ -219,7 +221,7 @@ Attacher.prototype = {
      * サーバーとAjax通信.
      * @param {Function} [callback] 通信成功時に行う処理を追加.
      */
-    attach : function(callback){
+    attach : function(callback){ // アタッチfunctionの大元
         // Attacherクラスの取得
         var self = this
 
@@ -265,6 +267,7 @@ Attacher.prototype = {
             for (var i = 0, max = attachedObj.length; i < max; i++){
                 var res = attachedObj[i],
                     node = this.dnb.get(res.index);
+                console.log(node);
                 $(node).before(res.newBody);
                 $(node).remove();
             }

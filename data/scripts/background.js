@@ -338,8 +338,9 @@ var Constant = {
             Login : _origin + _app + '/login',
             AutoLogin : _origin + _app + '/autologin',
             Logout : _origin + _app + '/keygen',
-            Attach : _origin + _app + '/attach',
+            Attach : _origin + _app + '/textattach',
             ObjectAttach : _origin + _app + '/objattach',
+            // ObjectAttach : _origin + _app + '/textattach',
             Version : _origin + _app + '/version',
             Keygen : _origin + _app + "/keygen"
         }
@@ -562,7 +563,7 @@ Wix.main = new WIXClass({
         'VersionCheck' : function(req, con){
             Extension.Message.send(req, con, vm.isNewVersion());
         },
-        'Attach' : function(req, con){
+        'Attach' : function(req, con){ // バックグラウンドにおけるAttachの実行
             var val = req.message;
 
             $.ajax({
