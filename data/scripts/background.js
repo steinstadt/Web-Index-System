@@ -175,6 +175,9 @@ var Extension = (function(){
                         div.appendChilds([input, label]);
                         group.append(div);
                     }
+
+
+
                     return group
                 },
                 createSearchForm : function(name){
@@ -358,7 +361,7 @@ var defaultBookmarks = {
     'Blog' : '3',
     'Company' : '4',
     'EJ Dict' : '5',
-    'test' : '99'
+    'Wix-demo' : '102'
 }
 
 // word tank用　検索エンジン
@@ -600,6 +603,9 @@ Wix.main = new WIXClass({
                     array.push(attachButton);
                 }
             }
+
+            // create text-attach button
+
 
             // create offbutton
             attachOffButoon = Extension.UI.createElement("button",{

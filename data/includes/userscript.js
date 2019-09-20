@@ -245,8 +245,13 @@ Attacher.prototype = {
                     if(self.getAttachType() == 'object'){
                         data = Util.deserealize(data);
                     }
+                    // アタッチされたテキストに対するremoveイベント
+                    wixTextRemove()
                     self.rewrite(data);
                     self.popup();
+                    // アタッチされたキーワードに対するクリックイベントリスナ
+                    wixTextKeywordClick();
+
                     if(callback){
                         callback(data, 'success');
                     }
@@ -267,7 +272,6 @@ Attacher.prototype = {
             for (var i = 0, max = attachedObj.length; i < max; i++){
                 var res = attachedObj[i],
                     node = this.dnb.get(res.index);
-                console.log(node);
                 $(node).before(res.newBody);
                 $(node).remove();
             }
@@ -516,7 +520,14 @@ var WixU = {
                 link.setAttribute("id", Url+"-css");
                 link.href = Constant.URL.PublicFolder + '/css/' + Url + '.css';
                 var head = document.getElementsByTagName("head")[0];
+
+                // wixEFL.cssの追加
+                var linkEFL = document.createElement("link");
+                linkEFL.rel = "stylesheet";
+                linkEFL.href = Constant.URL.PublicFolder + '/css/' + 'wixEFL.css';
+
                 head.appendChild(link);
+                head.appendChild(linkEFL); // wixEFL.cssの追加
             }
         },
     },
@@ -597,9 +608,11 @@ WixU.main = new WixUClass({ //params引数の設定
             atc.setParameter('minLength' , minLength);
             atc.setParameter('rewriteAnchorText' , WixU.key.shift);
             if(WixU.key.shift){
-                atc.setParameter('body', document.getElementsByTagName('body')[0].innerHTML)
+                // atc.setParameter('body', document.getElementsByTagName('body')[0].innerHTML)
+                atc.setParameter('body', document.getElementById('#wix-main').innerHTML) // wix-mainでアタッチ設定
             }else {
-                atc.setParameter('body', $('body'))
+                // atc.setParameter('body', $('body'))
+                atc.setParameter('body', $('#wix-main')) // wix-mainでアタッチ設定
             }
 
             atc.attach(function(data, status){
@@ -673,6 +686,7 @@ WixU.main = new WixUClass({ //params引数の設定
             })
 
             $('.wix-attach-off').on('click',function(){
+                $('.wix-text-link').remove(); // アタッチされたテキストの削除
                 $('.wix-link').contents().unwrap();
                 $('.wix-decide').contents().unwrap();
                 // wixNumReset
@@ -722,6 +736,7 @@ var chromeStorageSync = chrome.storage.sync; // chrome拡張ストレージ機�
 
 // アタッチするwidをストレージに保存
 var wixModeAttach = function(wid, isWixOn){
+
   // chromeストレージ機能
   chromeStorageSync.set(
     {
@@ -742,5 +757,34 @@ var wixModeInUserScript = function(){
   });
 }
 window.setTimeout( wixModeInUserScript, 1500); // 3 second execute
+
+var wixTextRemove = function(){
+  $('.wix-text-link').remove(); // アタッチされたテキストの削除
+  $('.wix-keyword').contents().unwrap(); // アタッチされたキーワードのspanタグを削除
+}
+
+// アタッチされたテキスト(wix-text-link)に対するクリックイベントのセット
+var wixTextKeywordClick = function(){
+  $('.wix-keyword').on('click', function(e) {
+    // クリックした要素の色を変化させる
+    e.target.style.color = 'blue';
+    // クリックした要素の子要素を取得する
+    var keywordChild = e.target.getElementsByClassName("wix-text-link")[0];
+    // アタッチされたターゲットの表示スイッチを実行
+    wixTextLinkSwitch(keywordChild);
+  });
+}
+
+// wix-text-linkの表示スイッチ
+var wixTextLinkSwitch = function(element){
+  var styleDisplay = document.defaultView.getComputedStyle(element, null).display;
+  if (styleDisplay === 'none'){
+    // 要素が非表示だったら表示させる
+    element.style.display = 'inline';
+  } else {
+    // 要素が表示だったら非表示にする
+    element.style.display = 'none';
+  }
+}
 
 })(window.jQuery190)
