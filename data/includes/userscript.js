@@ -687,6 +687,7 @@ WixU.main = new WixUClass({ //params引数の設定
 
             $('.wix-attach-off').on('click',function(){
                 $('.wix-text-link').remove(); // アタッチされたテキストの削除
+                $('.wix-keyword').contents().unwrap(); // キーワードに対する削除処理
                 $('.wix-link').contents().unwrap();
                 $('.wix-decide').contents().unwrap();
                 // wixNumReset
@@ -770,8 +771,14 @@ var wixTextKeywordClick = function(){
     e.target.style.color = 'blue';
     // クリックした要素の子要素を取得する
     var keywordChild = e.target.getElementsByClassName("wix-text-link")[0];
+    // null check
+    if (!keywordChild){
+      return;
+    }
     // アタッチされたターゲットの表示スイッチを実行
     wixTextLinkSwitch(keywordChild);
+    // アタッチされたキーワードを履歴に登録表示
+    addKeywordToList(e.target.innerText);
   });
 }
 
@@ -785,6 +792,13 @@ var wixTextLinkSwitch = function(element){
     // 要素が表示だったら非表示にする
     element.style.display = 'none';
   }
+}
+
+// クリックしたキーワードをリストに表示
+var addKeywordToList = function(keyword){
+  var li = document.createElement('li');
+  li.innerText = keyword;
+  $('#wix-learning-list').append(li);
 }
 
 })(window.jQuery190)

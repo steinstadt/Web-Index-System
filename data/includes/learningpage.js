@@ -21,7 +21,10 @@
     learningHistory.id = 'wix-learning-history';
     var historyLabel = document.createElement('h2');
     historyLabel.innerText = "調べた単語";
+    var historyList = document.createElement('ul');
+    historyList.id = 'wix-learning-list';
     learningHistory.appendChild(historyLabel);
+    learningHistory.appendChild(historyList);
 
     // 要素の結合
     learningArea.appendChild(learningForm); // learningForm -> learningArea

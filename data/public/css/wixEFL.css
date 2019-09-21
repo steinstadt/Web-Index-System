@@ -11,6 +11,7 @@
   position: fixed;
   float: left;
   border-right: solid 3px #364e96;
+  overflow-y: scroll;
 }
 
 #wix-learning-form {
